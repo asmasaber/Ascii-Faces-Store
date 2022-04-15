@@ -4,7 +4,7 @@
     - [x] List of Product Item
     - [x] Loading
     - [x] Infinite Scroll
-    - [ ] pre-emptively fetch the next batch
+    - [x] pre-emptively fetch the next batch
     - [x] End of Products Text
     - [ ] check the performance
     - [ ] Reveiew & Enhancmment
