@@ -5,6 +5,7 @@ import {
   PushProducts,
   ChangeSortBy,
   IncrementPageIndex,
+  SetHasMore
 } from './constants';
 
 const InitalState = {
@@ -14,6 +15,7 @@ const InitalState = {
   sortBy: DefaultSortOption,
   pageLimit: 16,
   pageIndex: 1,
+  hasMore: true
 };
 
 const ProductsReducer = (state, action) => {
@@ -46,6 +48,11 @@ const ProductsReducer = (state, action) => {
       return {
         ...state,
         pageIndex: state.pageIndex + 1,
+      }
+    case SetHasMore: 
+      return {
+        ...state,
+        hasMore: action.payload.hasMore,
       }
     default:
       return state;

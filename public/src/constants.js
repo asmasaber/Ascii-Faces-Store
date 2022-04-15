@@ -10,6 +10,7 @@ const SetError = 'SET_ERROR';
 const PushProducts = 'PUSH_PRODUCTS';
 const ChangeSortBy = 'CHANGE_SORT_BY';
 const IncrementPageIndex = 'INCREMENT_PAGE_INDEX';
+const SetHasMore = 'SET_HAS_MORE';
 
 export {
   SortOptions,
@@ -19,4 +20,5 @@ export {
   PushProducts,
   ChangeSortBy,
   IncrementPageIndex,
+  SetHasMore
 };
