@@ -6,3 +6,16 @@
     - [ ] Infinite Scroll
     - [ ] End of Products Text
 */
+
+import React from 'react';
+
+import './ProductList.css';
+
+const ProductList = () => {
+  
+  return (
+    <h1>Product List</h1>
+  );
+}
+
+export { ProductList };
