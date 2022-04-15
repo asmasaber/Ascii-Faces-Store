@@ -1,6 +1,6 @@
 /* 
   #TODO: Product List Component
-    - [ ] Sort Form
+    - [x] Sort Form
     - [ ] List of Product Item
     - [ ] Loading
     - [ ] Infinite Scroll
@@ -8,13 +8,15 @@
 */
 
 import React from 'react';
-
+import { SortForm } from '../SortForm/SortForm';
 import './ProductList.css';
 
 const ProductList = () => {
-  
   return (
-    <h1>Product List</h1>
+    <>
+      <SortForm />
+      <h1>Product List</h1>
+    </>
   );
 }
 

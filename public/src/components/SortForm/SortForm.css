@@ -1,0 +1,29 @@
+.form-wrapper {
+  width: 400px;
+  margin: 20px auto;
+}
+
+select {
+  border-style: inset;
+  outline-color: #F3A326;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px;
+  max-width: 600px;
+  min-width: 300px;
+  color: #666;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  margin: 0 10px;
+  appearance: none; /* Remove default arrow */
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select {
+    background: #fff
+      url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/392/select-arrow.png) 95%
+      50% no-repeat;
+  }
+}
