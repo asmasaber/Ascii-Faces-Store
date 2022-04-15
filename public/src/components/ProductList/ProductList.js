@@ -4,6 +4,7 @@
     - [x] List of Product Item
     - [x] Loading
     - [x] Infinite Scroll
+    - [ ] pre-emptively fetch the next batch
     - [ ] End of Products Text
 */
 
@@ -16,14 +17,22 @@ import {
   SetLoading, 
   PushProducts,
   IncrementPageIndex,
-  SetHasMore
+  SetHasMore,
+  ChangeSortBy
 } from '../../constants';
 
 import './ProductList.css';
 
 const ProductList = () => {
   const [state, dispatch] = useReducer(ProductsReducer, InitalState);
-  const { loading, pageIndex, pageLimit, sortBy , hasMore, items: products } = state;
+  const { 
+    loading, 
+    pageIndex, 
+    pageLimit, 
+    sortBy , 
+    hasMore, 
+    items: products 
+  } = state;
 
   const fetchProducts = async() => {
     dispatch({ type: SetLoading })
@@ -35,6 +44,10 @@ const ProductList = () => {
     dispatch({ type: PushProducts, payload: { items } })
   }
 
+  const handleSortChange = (sortBy) => {
+    dispatch({ type: ChangeSortBy, payload: { sortBy } });
+  }
+
   const infiniteScroll = () => {
     if (hasMore && !loading && Math.ceil(window.innerHeight + document.documentElement.scrollTop) === document.documentElement.offsetHeight){
       dispatch({ type: IncrementPageIndex })
@@ -43,7 +56,7 @@ const ProductList = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [pageIndex]);
+  }, [pageIndex, sortBy]);
 
   useEffect(() => {
     window.addEventListener('scroll', infiniteScroll);
@@ -53,7 +66,7 @@ const ProductList = () => {
   return (
     <>
       {loading && <Loading />}
-      <SortForm />
+      <SortForm onChange={handleSortChange}/>
       <div className="row">
         {products.map((p) => 
           <div className="column" key={p.id}>

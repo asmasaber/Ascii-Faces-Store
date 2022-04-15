@@ -12,7 +12,7 @@ Features
 ----
 
 - [Done] products are displayed in a grid 
-- give the user an option to sort the products in ascending order. Can sort by "size", "price" or "id". The products list should be reloaded when a new sorting option is chosen.
+- [Done] give the user an option to sort the products in ascending order. Can sort by "size", "price" or "id". The products list should be reloaded when a new sorting option is chosen.
 - each product has :
   - [Done] a "size" field, which is the font-size (in pixels). We should display the faces in their correct size, to give customers a realistic impression of what they're buying.
   - [Done] a "price" field, in cents. This should be formatted as dollars like `$3.51`.
