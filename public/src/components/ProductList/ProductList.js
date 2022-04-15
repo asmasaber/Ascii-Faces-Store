@@ -5,7 +5,7 @@
     - [x] Loading
     - [x] Infinite Scroll
     - [ ] pre-emptively fetch the next batch
-    - [ ] End of Products Text
+    - [x] End of Products Text
 */
 
 import React, { useEffect, useReducer } from 'react';
@@ -74,6 +74,7 @@ const ProductList = () => {
           </div>
         )}
       </div>
+      {!hasMore && <div className="end">~ end of catalogue ~</div>}
     </>
   );
 }

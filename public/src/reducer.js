@@ -13,7 +13,7 @@ const InitalState = {
   error: null,
   items: [],
   sortBy: DefaultSortOption,
-  pageLimit: 16,
+  pageLimit: 200,
   pageIndex: 1,
   hasMore: true
 };

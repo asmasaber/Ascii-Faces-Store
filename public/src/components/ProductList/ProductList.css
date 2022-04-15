@@ -10,6 +10,13 @@
   padding: 0 4px;
 }
 
+.end {
+  margin: 30px auto;
+  text-align: center;
+  font-weight: 700;
+  font-size: 18px;
+}
+
 @media (max-width: 800px) {
   .column {
     flex: 50%;
