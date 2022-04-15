@@ -1,0 +1,13 @@
+.errorWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 600px;
+  padding: 200px 0;
+  color: #F3A326;
+}
+
+.errorWrapper>i.fa {
+  font-size: 46px;
+  padding: 10px;
+}
