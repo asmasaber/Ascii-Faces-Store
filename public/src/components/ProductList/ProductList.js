@@ -1,29 +1,33 @@
 /* 
   #TODO: Product List Component
     - [x] Sort Form
-    - [ ] List of Product Item
-    - [ ] Loading
+    - [x] List of Product Item
+    - [x] Loading
     - [ ] Infinite Scroll
     - [ ] End of Products Text
 */
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { Loading } from '../Loading/Loading';
 import { SortForm } from '../SortForm/SortForm';
 import { ProductItem } from '../ProductItem/ProductItem';
+import { ProductsReducer, InitalState } from '../../reducer';
+import { 
+  SetLoading, 
+  PushProducts 
+} from '../../constants';
 
 import './ProductList.css';
 
 const ProductList = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [state, dispatch] = useReducer(ProductsReducer, InitalState);
+  const { loading, pageIndex, pageLimit, sortBy, items: products } = state;
 
   const fetchProducts = async() => {
-    setLoading(true);
-    const response = await fetch('http://localhost:3000/api/products');
-    const products = await response.json();
-    setLoading(false);
-    setProducts(products);
+    dispatch({ type: SetLoading })
+    const response = await fetch(`http://localhost:3000/api/products?_page=${pageIndex}&_limit=${pageLimit}&_sort=${sortBy}`);
+    const items = await response.json();
+    dispatch({ type: PushProducts, payload: { items } })
   }
 
   useEffect(() => {
