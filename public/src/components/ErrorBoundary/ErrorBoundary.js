@@ -1,5 +1,4 @@
 import React from 'react';
-
 import './ErrorBoundary.css';
 
 class ErrorBoundary extends React.Component {
@@ -27,9 +26,7 @@ class ErrorBoundary extends React.Component {
             {this.state.info && this.state.info.componentStack}
           </details>
         </div>
-      )
-      
-
+      );
     }
 
     return this.props.children; 

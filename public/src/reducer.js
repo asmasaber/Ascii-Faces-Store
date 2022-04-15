@@ -45,6 +45,7 @@ const ProductsReducer = (state, action) => {
       return {
         ...state,
         items: [],
+        preFetchedItems: [],
         sortBy: action.payload.sortBy,
         pageIndex: 1,
       }
@@ -78,5 +79,5 @@ const ProductsReducer = (state, action) => {
 
 export { 
   InitalState, 
-  ProductsReducer 
+  ProductsReducer,
 };

@@ -11,11 +11,13 @@ import { SortOptions } from '../../constants';
 import './SortForm.css';
 
 const SortForm = ({ onChange }) => {
+  const randomID = useId();
+
   return (
     <div className="form-wrapper">
       Sort by: 
       <select onChange={(e) => onChange(e.target.value)}>
-        {SortOptions.map((o) => <option key={useId()} value={o.value}>{o.label}</option>)}
+        {SortOptions.map((o) => <option key={`${randomID}-${o.value}`} value={o.value}>{o.label}</option>)}
       </select>
     </div>
   );
@@ -23,10 +25,10 @@ const SortForm = ({ onChange }) => {
 
 SortForm.prototype = {
   onChange: PropTypes.func.isRequired,
-}
+};
 
 SortForm.defaultProps = {
   onChange: () => ({}),
-}
+};
 
 export { SortForm };
