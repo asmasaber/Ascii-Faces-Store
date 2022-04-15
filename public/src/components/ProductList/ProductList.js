@@ -8,12 +8,14 @@
 */
 
 import React from 'react';
+import { Loading } from '../Loading/Loading';
 import { SortForm } from '../SortForm/SortForm';
 import './ProductList.css';
 
 const ProductList = () => {
   return (
     <>
+      <Loading />
       <SortForm />
       <h1>Product List</h1>
     </>
