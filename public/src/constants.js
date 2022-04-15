@@ -11,6 +11,8 @@ const PushProducts = 'PUSH_PRODUCTS';
 const ChangeSortBy = 'CHANGE_SORT_BY';
 const IncrementPageIndex = 'INCREMENT_PAGE_INDEX';
 const SetHasMore = 'SET_HAS_MORE';
+const SetPreFetchedItems = 'SET_PREFETCHED_ITEMS';
+const SetPreFetching = 'SET_PREFETCHING';
 
 export {
   SortOptions,
@@ -20,5 +22,7 @@ export {
   PushProducts,
   ChangeSortBy,
   IncrementPageIndex,
-  SetHasMore
+  SetHasMore,
+  SetPreFetchedItems,
+  SetPreFetching,
 };

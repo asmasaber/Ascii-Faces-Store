@@ -6,6 +6,10 @@
     - [x] Infinite Scroll
     - [ ] pre-emptively fetch the next batch
     - [x] End of Products Text
+    - [ ] check the performance
+    - [ ] Reveiew & Enhancmment
+    - [ ] Error catch
+    - [ ] handle no data found
 */
 
 import React, { useEffect, useReducer } from 'react';
@@ -18,7 +22,9 @@ import {
   PushProducts,
   IncrementPageIndex,
   SetHasMore,
-  ChangeSortBy
+  ChangeSortBy,
+  SetPreFetchedItems,
+  SetPreFetching,
 } from '../../constants';
 
 import './ProductList.css';
@@ -31,17 +37,41 @@ const ProductList = () => {
     pageLimit, 
     sortBy , 
     hasMore, 
-    items: products 
+    items: products,
+    preFetchedItems,
+    preFetching,
   } = state;
 
-  const fetchProducts = async() => {
-    dispatch({ type: SetLoading })
-    const response = await fetch(`http://localhost:3000/api/products?_page=${pageIndex}&_limit=${pageLimit}&_sort=${sortBy}`);
+  const fetchProducts = async(page = pageIndex) => {
+    const response = await fetch(`http://localhost:3000/api/products?_page=${page}&_limit=${pageLimit}&_sort=${sortBy}`);
     const items = await response.json();
     if(items.length < pageLimit) {
-      dispatch({ type: SetHasMore, payload: { hasMore: false }});
+      dispatch({ type: SetHasMore, payload: { hasMore: false, loading: false }});
     }
-    dispatch({ type: PushProducts, payload: { items } })
+    return items;
+  }
+
+  const loadCurrentWindow = async () => {
+    dispatch({ type: SetLoading });
+    if(preFetchedItems && preFetchedItems.length) {
+      dispatch({ type: PushProducts, payload: { items: preFetchedItems } });
+      dispatch({ type: SetPreFetchedItems, payload: { items: [] } });
+    } else {
+      const items = await fetchProducts();
+      dispatch({ type: PushProducts, payload: { items } })
+    }
+    preFetchNextWindow();
+  }
+
+  const preFetchNextWindow = async () => {
+    dispatch({ type: SetPreFetching,  payload: { preFetch: true } });
+    const items = await fetchProducts(pageIndex + 1);
+    dispatch({ type: SetPreFetchedItems, payload: { items } });
+    
+    const endOfPage =  Math.ceil(window.innerHeight + document.documentElement.scrollTop) === document.documentElement.offsetHeight;
+    if (endOfPage && hasMore) {
+      dispatch({ type: IncrementPageIndex }) ;
+    }
   }
 
   const handleSortChange = (sortBy) => {
@@ -50,22 +80,27 @@ const ProductList = () => {
 
   const infiniteScroll = () => {
     if (hasMore && !loading && Math.ceil(window.innerHeight + document.documentElement.scrollTop) === document.documentElement.offsetHeight){
-      dispatch({ type: IncrementPageIndex })
+      if(!preFetching) {
+        dispatch({ type: IncrementPageIndex });
+      } else {
+        dispatch({ type: SetLoading });
+      }
     }
   }
 
   useEffect(() => {
-    fetchProducts();
-  }, [pageIndex, sortBy]);
+    hasMore && loadCurrentWindow();
+  }, [pageIndex, sortBy, hasMore]);
+
 
   useEffect(() => {
     window.addEventListener('scroll', infiniteScroll);
     return () => window.removeEventListener('scroll', infiniteScroll);
-  }, [hasMore]);
+  }, [hasMore, preFetching]);
 
   return (
     <>
-      {loading && <Loading />}
+      {(loading) && <Loading />}
       <SortForm onChange={handleSortChange}/>
       <div className="row">
         {products.map((p) => 

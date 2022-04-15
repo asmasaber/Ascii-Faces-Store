@@ -5,7 +5,9 @@ import {
   PushProducts,
   ChangeSortBy,
   IncrementPageIndex,
-  SetHasMore
+  SetHasMore,
+  SetPreFetchedItems,
+  SetPreFetching,
 } from './constants';
 
 const InitalState = {
@@ -13,9 +15,11 @@ const InitalState = {
   error: null,
   items: [],
   sortBy: DefaultSortOption,
-  pageLimit: 200,
+  pageLimit: 50,
   pageIndex: 1,
-  hasMore: true
+  hasMore: true,
+  preFetchedItems: [],
+  preFetching: false,
 };
 
 const ProductsReducer = (state, action) => {
@@ -53,6 +57,19 @@ const ProductsReducer = (state, action) => {
       return {
         ...state,
         hasMore: action.payload.hasMore,
+        loading: action.payload.loading,
+      }
+    case SetPreFetching: {
+      return {
+        ...state,
+        preFetching: action.payload.preFetch,
+      }
+    }
+    case SetPreFetchedItems: 
+      return {
+        ...state,
+        preFetchedItems: action.payload.items,
+        preFetching: false,
       }
     default:
       return state;
