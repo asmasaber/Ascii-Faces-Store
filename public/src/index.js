@@ -5,4 +5,8 @@ import { App } from './components/App/App';
 const container = document.getElementById('App');
 const root = createRoot(container);
 
-root.render( <App />);
+ /* 
+    #TODO: App Component
+      - [ ] Error Boundary
+*/
+root.render(<App />);
