@@ -1,25 +1,24 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { SortOptions } from '../../constants';
+import React, { useContext } from 'react';
+import { SortOptions, ChangeSortBy } from '../../constants';
+import { ProductsContext } from '../../context';
 import './SortForm.css';
 
-const SortForm = ({ onChange }) => {
+const SortForm = () => {
+  const { dispatch } = useContext(ProductsContext);
+
+  const handleChange = (e) => {
+    const sortBy = e.target.value;
+    dispatch({ type: ChangeSortBy, payload: { sortBy } });
+  }
+
   return (
     <div className="form-wrapper">
       Sort by: 
-      <select onChange={(e) => onChange(e.target.value)}>
+      <select onChange={handleChange}>
         {SortOptions.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
     </div>
   );
 }
-
-SortForm.prototype = {
-  onChange: PropTypes.func.isRequired,
-};
-
-SortForm.defaultProps = {
-  onChange: () => ({}),
-};
 
 export { SortForm };

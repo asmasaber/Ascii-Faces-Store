@@ -1,15 +1,13 @@
-import React, { useEffect, useReducer } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useContext } from 'react';
 import { Loading } from '../Loading/Loading';
 import { ProductItem } from '../ProductItem/ProductItem';
 import { ErrorPlaceholder } from '../ErrorPlaceholder/ErrorPlaceholder';
-import { ProductsReducer, InitalState } from '../../reducer';
+import { ProductsContext } from '../../context';
 import {
   SetLoading,
   PushProducts,
   IncrementPageIndex,
   SetNoMoreData,
-  ChangeSortBy,
   SetPreFetchedItems,
   SetPreFetching,
   SetError,
@@ -18,8 +16,9 @@ import {
 } from '../../constants';
 import './ProductList.css';
 
-const ProductList = ({ selectedSortBy }) => {
-  const [state, dispatch] = useReducer(ProductsReducer, InitalState);
+const ProductList = () => {
+  const { state, dispatch } = useContext(ProductsContext);
+
   const {
     loading,
     pageIndex,
@@ -93,10 +92,6 @@ const ProductList = ({ selectedSortBy }) => {
     return () => window.removeEventListener('scroll', infiniteScroll);
   }, [hasMore, preFetching]);
 
-  useEffect(() => {
-    dispatch({ type: ChangeSortBy, payload: { sortBy: selectedSortBy } });
-  }, [selectedSortBy]);
-
   return (
     <>
       {(loading) && <Loading />}
@@ -115,11 +110,6 @@ const ProductList = ({ selectedSortBy }) => {
       {!hasMore && !products.length && <div className="end">~ NO Data Found ~</div>}
     </>
   );
-};
-
-
-ProductList.propTypes = {
-  selectedSortBy: PropTypes.string.isRequired,
 };
 
 export { ProductList };
