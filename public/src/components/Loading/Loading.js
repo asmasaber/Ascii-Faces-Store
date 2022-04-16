@@ -1,14 +1,7 @@
-/* 
-  #TODO: Loading Component
-    - [x] Simple Spinner
-*/
-
 import React from 'react';
-
 import './Loading.css';
 
 const Loading = () => {
-
   return (
     <div className="overlay">
       <div className="overlay__inner">

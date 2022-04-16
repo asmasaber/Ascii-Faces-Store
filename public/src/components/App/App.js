@@ -5,12 +5,6 @@ import { DefaultSortOption } from '../../constants';
 import './App.css';
 
 const App = () => {
-  /* 
-    #TODO: App Component
-      - [x] Header
-      - [x] Product List
-  */
-
   const [sortBy, setSortBy] = useState(DefaultSortOption);
   
   return (

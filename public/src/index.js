@@ -6,11 +6,6 @@ import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 const container = document.getElementById('App');
 const root = createRoot(container);
 
- /* 
-    #TODO: App Component
-      - [x] Error Boundary
-*/
-
 root.render(
   <Profiler id="App">
     <ErrorBoundary>

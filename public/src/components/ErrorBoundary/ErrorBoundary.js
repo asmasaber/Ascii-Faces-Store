@@ -1,5 +1,5 @@
 import React from 'react';
-import './ErrorBoundary.css';
+import { ErrorPlaceholder } from '../ErrorPlaceholder/ErrorPlaceholder';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -19,12 +19,13 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <div className="errorMessage">
-          <h1>Something went wrong.</h1>
-          <details style={{ whiteSpace: 'pre-wrap' }}>
-            {this.state.error && this.state.error.toString()}
-            <br />
-            {this.state.info && this.state.info.componentStack}
-          </details>
+          <ErrorPlaceholder>
+            <details style={{ whiteSpace: 'pre-wrap' }}>
+              {this.state.error && this.state.error.toString()}
+              <br />
+              {this.state.info && this.state.info.componentStack}
+            </details>
+          </ErrorPlaceholder>
         </div>
       );
     }

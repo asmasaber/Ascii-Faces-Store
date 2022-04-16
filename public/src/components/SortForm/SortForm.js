@@ -1,15 +1,9 @@
-/* 
-  #TODO: Sort Form Component
-    - [x] Select Field
-*/
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { SortOptions } from '../../constants';
-
 import './SortForm.css';
-const SortForm = ({ onChange }) => {
 
+const SortForm = ({ onChange }) => {
   return (
     <div className="form-wrapper">
       Sort by: 

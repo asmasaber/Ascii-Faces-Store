@@ -1,10 +1,3 @@
-/* 
-  #TODO: Product Item Component
-    - [x] Card
-    - [x] Format relative time 
-    - [x] Format Price
-*/
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { RelativeTime } from '../RelativeTime/RelativeTime';
