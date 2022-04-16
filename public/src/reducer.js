@@ -5,9 +5,10 @@ import {
   PushProducts,
   ChangeSortBy,
   IncrementPageIndex,
-  SetHasMore,
+  SetNoMoreData,
   SetPreFetchedItems,
   SetPreFetching,
+  PushPrefetchedProducts,
 } from './constants';
 
 const InitalState = {
@@ -20,6 +21,7 @@ const InitalState = {
   hasMore: true,
   preFetchedItems: [],
   preFetching: false,
+  pushDone: false,
 };
 
 const ProductsReducer = (state, action) => {
@@ -28,6 +30,7 @@ const ProductsReducer = (state, action) => {
       return {
         ...state,
         loading: true,
+        pushDone: false,
       }
     case SetError: 
       return {
@@ -40,6 +43,16 @@ const ProductsReducer = (state, action) => {
         ...state,
         items: [...state.items, ...action.payload.items],
         loading: false,
+        pushDone: true,
+      }
+    case PushPrefetchedProducts:
+      return {
+        ...state,
+        loading: false,
+        items: [...state.items, ...state.preFetchedItems],
+        preFetchedItems: [],
+        pushDone: true,
+        preFetching: false,
       }
     case ChangeSortBy: 
       return {
@@ -48,22 +61,24 @@ const ProductsReducer = (state, action) => {
         preFetchedItems: [],
         sortBy: action.payload.sortBy,
         pageIndex: 1,
+        hasMore: true,
+        pushDone: false,
       }
     case IncrementPageIndex: 
       return {
         ...state,
         pageIndex: state.pageIndex + 1,
       }
-    case SetHasMore: 
+    case SetNoMoreData: 
       return {
         ...state,
-        hasMore: action.payload.hasMore,
-        loading: action.payload.loading,
+        hasMore: false,
+        loading: false,
       }
     case SetPreFetching: {
       return {
         ...state,
-        preFetching: action.payload.preFetch,
+        preFetching: true,
       }
     }
     case SetPreFetchedItems: 
@@ -71,6 +86,7 @@ const ProductsReducer = (state, action) => {
         ...state,
         preFetchedItems: action.payload.items,
         preFetching: false,
+        loading: false,
       }
     default:
       return state;

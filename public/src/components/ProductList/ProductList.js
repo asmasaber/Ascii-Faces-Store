@@ -13,26 +13,26 @@
 */
 
 import React, { useEffect, useReducer } from 'react';
+import PropTypes from 'prop-types';
 import { Loading } from '../Loading/Loading';
-import { SortForm } from '../SortForm/SortForm';
 import { ProductItem } from '../ProductItem/ProductItem';
 import { ErrorPlaceholder } from '../ErrorPlaceholder/ErrorPlaceholder';
-
 import { ProductsReducer, InitalState } from '../../reducer';
 import {
   SetLoading,
   PushProducts,
   IncrementPageIndex,
-  SetHasMore,
+  SetNoMoreData,
   ChangeSortBy,
   SetPreFetchedItems,
   SetPreFetching,
   SetError,
+  BaseURL,
+  PushPrefetchedProducts,
 } from '../../constants';
-
 import './ProductList.css';
 
-const ProductList = () => {
+const ProductList = ({ selectedSortBy }) => {
   const [state, dispatch] = useReducer(ProductsReducer, InitalState);
   const {
     loading,
@@ -44,32 +44,34 @@ const ProductList = () => {
     preFetchedItems,
     preFetching,
     error,
+    pushDone,
   } = state;
 
+  const handleSortChange = (sortBy) => {
+    dispatch({ type: ChangeSortBy, payload: { sortBy } });
+  }
+
   const fetchProducts = async (page = pageIndex) => {
-    const response = await fetch(`http://localhost:3000/api/products?_page=${page}&_limit=${pageLimit}&_sort=${sortBy}`);
+    const response = await fetch(`${BaseURL}/products?_page=${page}&_limit=${pageLimit}&_sort=${sortBy}`);
     const items = await response.json();
     if (items.length < pageLimit) {
-      dispatch({ type: SetHasMore, payload: { hasMore: false, loading: false } });
+      dispatch({ type: SetNoMoreData });
     } 
     return items;
   }
 
   const loadCurrentWindow = async () => {
-    dispatch({ type: SetLoading });
-    let items;
     if (preFetchedItems && preFetchedItems.length) {
-      dispatch({ type: PushProducts, payload: { items: preFetchedItems } });
-      dispatch({ type: SetPreFetchedItems, payload: { items: [] } });
+      dispatch({ type: PushPrefetchedProducts });
     } else {
-      items = await fetchProducts();
+      dispatch({ type: SetLoading });
+      const items = await fetchProducts();
       dispatch({ type: PushProducts, payload: { items } })
     }
-    items && items.length && preFetchNextWindow();
   }
 
   const preFetchNextWindow = async () => {
-    dispatch({ type: SetPreFetching, payload: { preFetch: true } });
+    dispatch({ type: SetPreFetching });
     const items = await fetchProducts(pageIndex + 1);
     dispatch({ type: SetPreFetchedItems, payload: { items } });
 
@@ -78,13 +80,10 @@ const ProductList = () => {
       dispatch({ type: IncrementPageIndex });
     }
   }
-
-  const handleSortChange = (sortBy) => {
-    dispatch({ type: ChangeSortBy, payload: { sortBy } });
-  }
-
+  
   const infiniteScroll = () => {
-    if (hasMore && !loading && Math.ceil(window.innerHeight + document.documentElement.scrollTop) === document.documentElement.offsetHeight) {
+    const endOfPage = Math.ceil(window.innerHeight + document.documentElement.scrollTop) === document.documentElement.offsetHeight;
+    if (endOfPage && hasMore) {
       if (!preFetching) {
         dispatch({ type: IncrementPageIndex });
       } else {
@@ -94,6 +93,12 @@ const ProductList = () => {
   }
 
   useEffect(() => {
+    const canPrefetch = !preFetchedItems.length && !preFetching && hasMore && pushDone;
+    canPrefetch &&
+      preFetchNextWindow();
+  }, [pushDone, hasMore, preFetchedItems]);
+
+  useEffect(() => {
     hasMore &&
       loadCurrentWindow()
         .catch((error) => {
@@ -101,16 +106,18 @@ const ProductList = () => {
         });
   }, [pageIndex, sortBy, hasMore]);
 
-
   useEffect(() => {
     window.addEventListener('scroll', infiniteScroll);
     return () => window.removeEventListener('scroll', infiniteScroll);
   }, [hasMore, preFetching]);
 
+  useEffect(() => {
+    dispatch({ type: ChangeSortBy, payload: { sortBy: selectedSortBy } });
+  }, [selectedSortBy]);
+
   return (
     <>
       {(loading) && <Loading />}
-      <SortForm onChange={handleSortChange} />
       {
         error ? 
         <ErrorPlaceholder error={error}>{error}</ErrorPlaceholder> :
@@ -126,6 +133,11 @@ const ProductList = () => {
       {!hasMore && !products.length && <div className="end">~ NO Data Found ~</div>}
     </>
   );
-}
+};
+
+
+ProductList.propTypes = {
+  selectedSortBy: PropTypes.string.isRequired,
+};
 
 export { ProductList };

@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 
-const RelativeTime = ({ date }) => {
-  const time = useMemo(() => {
+const RelativeTime = memo(({ date }) => {
+  const time = (() => {
     const msPerMinute = 60 * 1000;
     const msPerHour = msPerMinute * 60;
     const msPerDay = msPerHour * 24;
@@ -20,14 +20,14 @@ const RelativeTime = ({ date }) => {
     } else {
       return new Date(date).toLocaleDateString();
     }
-  });
+  })();
 
   return (
     <>
       <span>since:</span> {time}
     </>
   );
-}
+});
 
 RelativeTime.propTypes = {
   date: PropTypes.string.isRequired,

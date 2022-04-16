@@ -3,20 +3,18 @@
     - [x] Select Field
 */
 
-import React, { useId } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { SortOptions } from '../../constants';
 
 import './SortForm.css';
-
 const SortForm = ({ onChange }) => {
-  const randomID = useId();
 
   return (
     <div className="form-wrapper">
       Sort by: 
       <select onChange={(e) => onChange(e.target.value)}>
-        {SortOptions.map((o) => <option key={`${randomID}-${o.value}`} value={o.value}>{o.label}</option>)}
+        {SortOptions.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
     </div>
   );
