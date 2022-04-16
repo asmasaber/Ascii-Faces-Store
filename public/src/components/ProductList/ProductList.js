@@ -1,17 +1,3 @@
-/* 
-  #TODO: Product List Component
-    - [x] Sort Form
-    - [x] List of Product Item
-    - [x] Loading
-    - [x] Infinite Scroll
-    - [x] pre-emptively fetch the next batch
-    - [x] End of Products Text
-    - [ ] check the performance
-    - [ ] Reveiew & Enhancmment
-    - [x] Error catch
-    - [x] handle no data found
-*/
-
 import React, { useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { Loading } from '../Loading/Loading';
@@ -46,10 +32,6 @@ const ProductList = ({ selectedSortBy }) => {
     error,
     pushDone,
   } = state;
-
-  const handleSortChange = (sortBy) => {
-    dispatch({ type: ChangeSortBy, payload: { sortBy } });
-  }
 
   const fetchProducts = async (page = pageIndex) => {
     const response = await fetch(`${BaseURL}/products?_page=${page}&_limit=${pageLimit}&_sort=${sortBy}`);
